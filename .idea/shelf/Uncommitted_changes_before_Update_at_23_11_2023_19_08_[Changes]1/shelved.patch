@@ -1,0 +1,100 @@
+Index: src/test/java/OzTest.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>\r\nimport by.itacademi.shlesin.OzPage;\r\nimport org.junit.jupiter.api.Assertions;\r\nimport org.junit.jupiter.api.Test;\r\nimport org.openqa.selenium.By;\r\nimport org.openqa.selenium.WebDriver;\r\nimport org.openqa.selenium.chrome.ChromeDriver;\r\n\r\n\r\npublic class OzTest {\r\n    @Test\r\n    public void testWithoutExistUser() {\r\n        WebDriver driver = new ChromeDriver();\r\n        driver.manage().window().maximize();\r\n        driver.navigate().to(\"https://oz.by/\");\r\n        OzPage ozPage = new OzPage(driver);\r\n        ozPage.clickButtonLogin();\r\n        ozPage.clickTabLinkEmail();\r\n        ozPage.clickButtonEnter();\r\n        Assertions.assertEquals(\"Введите адрес электронной почты\", ozPage.getTextEnter());\r\n        driver.close();\r\n    }\r\n\r\n    @Test\r\n    public void testButtonEnter() {\r\n        WebDriver driver = new ChromeDriver();\r\n        driver.manage().window().maximize();\r\n        driver.navigate().to(\"https://oz.by/\");\r\n        OzPage ozPage = new OzPage(driver);\r\n        ozPage.clickButtonLogin();\r\n        Assertions.assertEquals(\"Вход\", ozPage.getWordEnter());\r\n        driver.close();\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/test/java/OzTest.java b/src/test/java/OzTest.java
+--- a/src/test/java/OzTest.java	
++++ b/src/test/java/OzTest.java	
+@@ -2,7 +2,6 @@
+ import by.itacademi.shlesin.OzPage;
+ import org.junit.jupiter.api.Assertions;
+ import org.junit.jupiter.api.Test;
+-import org.openqa.selenium.By;
+ import org.openqa.selenium.WebDriver;
+ import org.openqa.selenium.chrome.ChromeDriver;
+ 
+@@ -17,7 +16,7 @@
+         ozPage.clickButtonLogin();
+         ozPage.clickTabLinkEmail();
+         ozPage.clickButtonEnter();
+-        Assertions.assertEquals("Введите адрес электронной почты", ozPage.getTextEnter());
++        Assertions.assertEquals("Введите адрес электронной почты", ozPage.getTextErrorMessege());
+         driver.close();
+     }
+ 
+@@ -28,7 +27,7 @@
+         driver.navigate().to("https://oz.by/");
+         OzPage ozPage = new OzPage(driver);
+         ozPage.clickButtonLogin();
+-        Assertions.assertEquals("Вход", ozPage.getWordEnter());
++        Assertions.assertEquals("Вход", ozPage.getTextEnter());
+         driver.close();
+     }
+ }
+Index: src/main/java/by/itacademi/shlesin/OzPage.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package by.itacademi.shlesin;\r\n\r\nimport org.openqa.selenium.By;\r\nimport org.openqa.selenium.WebDriver;\r\n\r\npublic class OzPage {\r\n    public String buttonSubmitAccountLocator = \"//*[@id=\\\"top-page\\\"]/header/div[1]/div/div[1]/a/span[2]\";\r\n    public String buttonEnterWithEmailLocator = \"//*[@id=\\\"loginFormLoginEmailLink\\\"]\";\r\n    public String inputEmailLocator = \"//*[@id=\\\"loginForm\\\"]/div[2]/div[1]/div[1]/input\";\r\n    public String butoonEnterLocator = \"//*[@id=\\\"loginForm\\\"]/button\";\r\n    public String errorMessengeLocator = \"//*[@id=\\\"test\\\"]/div/div\";\r\n    public String wordEnterLocator = \"//*[@id=\\\"loginPopupIntro\\\"]\";\r\n    WebDriver driver;\r\n\r\n    public OzPage(WebDriver driver) {\r\n        this.driver = driver;\r\n    }\r\n\r\n    public void clickButtonLogin() {\r\n        driver.findElement(By.xpath(buttonSubmitAccountLocator)).click();\r\n    }\r\n\r\n    public void clickTabLinkEmail() {\r\n        driver.findElement(By.xpath(buttonEnterWithEmailLocator)).click();\r\n    }\r\n\r\n    public void sendKeysInputEmail(String newEmail) {\r\n        driver.findElement(By.xpath(inputEmailLocator)).sendKeys(newEmail);\r\n\r\n    }\r\n\r\n    public void clickButtonEnter() {\r\n        driver.findElement(By.xpath(butoonEnterLocator)).click();\r\n    }\r\n\r\n\r\n    public String getTextEnter() {\r\n        return  driver.findElement(By.xpath(errorMessengeLocator)).getText();\r\n    }\r\n\r\n    public String getWordEnter (){\r\n        return driver.findElement(By.xpath(wordEnterLocator)).getText();\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/by/itacademi/shlesin/OzPage.java b/src/main/java/by/itacademi/shlesin/OzPage.java
+--- a/src/main/java/by/itacademi/shlesin/OzPage.java	
++++ b/src/main/java/by/itacademi/shlesin/OzPage.java	
+@@ -4,13 +4,13 @@
+ import org.openqa.selenium.WebDriver;
+ 
+ public class OzPage {
+-    public String buttonSubmitAccountLocator = "//*[@id=\"top-page\"]/header/div[1]/div/div[1]/a/span[2]";
+-    public String buttonEnterWithEmailLocator = "//*[@id=\"loginFormLoginEmailLink\"]";
+-    public String inputEmailLocator = "//*[@id=\"loginForm\"]/div[2]/div[1]/div[1]/input";
+-    public String butoonEnterLocator = "//*[@id=\"loginForm\"]/button";
+-    public String errorMessengeLocator = "//*[@id=\"test\"]/div/div";
+-    public String wordEnterLocator = "//*[@id=\"loginPopupIntro\"]";
+-    WebDriver driver;
++    private String buttonSubmitAccountLocator = "//*[@id=\"top-page\"]/header/div[1]/div/div[1]/a/span[2]";
++    private String buttonEnterWithEmailLocator = "//*[@id=\"loginFormLoginEmailLink\"]";
++    private String inputEmailLocator = "//*[@id=\"loginForm\"]/div[2]/div[1]/div[1]/input";
++    private String butoonEnterLocator = "//*[@id=\"loginForm\"]/button";
++    private String errorMessengeLocator = "//*[@id=\"test\"]/div/div";
++    private String getTextEnterLocator = "//*[@id=\"loginPopupIntro\"]";
++    private WebDriver driver;
+ 
+     public OzPage(WebDriver driver) {
+         this.driver = driver;
+@@ -18,27 +18,22 @@
+ 
+     public void clickButtonLogin() {
+         driver.findElement(By.xpath(buttonSubmitAccountLocator)).click();
+-    }
++            }
+ 
+     public void clickTabLinkEmail() {
+         driver.findElement(By.xpath(buttonEnterWithEmailLocator)).click();
+     }
+ 
+-    public void sendKeysInputEmail(String newEmail) {
+-        driver.findElement(By.xpath(inputEmailLocator)).sendKeys(newEmail);
+-
+-    }
+-
+     public void clickButtonEnter() {
+         driver.findElement(By.xpath(butoonEnterLocator)).click();
+     }
+ 
+ 
+-    public String getTextEnter() {
+-        return  driver.findElement(By.xpath(errorMessengeLocator)).getText();
++    public String getTextErrorMessege() {
++        return driver.findElement(By.xpath(errorMessengeLocator)).getText();
+     }
+ 
+-    public String getWordEnter (){
+-        return driver.findElement(By.xpath(wordEnterLocator)).getText();
++    public String getTextEnter() {
++        return driver.findElement(By.xpath(getTextEnterLocator)).getText();
+     }
+ }
